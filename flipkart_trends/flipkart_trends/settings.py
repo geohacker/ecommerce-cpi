@@ -13,4 +13,4 @@ SPIDER_MODULES = ['flipkart_trends.spiders']
 NEWSPIDER_MODULE = 'flipkart_trends.spiders'
 DEFAULT_ITEM_CLASS = 'flipkart_trends.items.FlipkartTrendsItem'
 USER_AGENT = '%s/%s' % (BOT_NAME, BOT_VERSION)
-
+ITEM_PIPELINES = ['flipkart_trends.pipelines.FlipkartTrendsPipeline']

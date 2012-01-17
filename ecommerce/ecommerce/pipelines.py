@@ -1,10 +1,5 @@
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/topics/item-pipeline.html
-#from scrapy.http import Request
-from flipkart_trends.spiders.books import FlipkartBooksSpider
-from flipkart_trends.spiders.infibeam import InfibeamSpider
+from ecommerce.spiders.flipkart import FlipkartSpider
+from ecommerce.spiders.infibeam import InfibeamSpider
 from scrapy.exceptions import DropItem
 import csv, items
 from scrapy import log
@@ -13,7 +8,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.conf import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from flipkart_trends.models import Base, Books
+from ecommerce.models import Base, Books
 from datetime import datetime
 
 class FlipkartTrendsPipeline(object):
