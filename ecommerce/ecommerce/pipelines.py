@@ -8,8 +8,9 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.conf import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from ecommerce.models import Base, Books
+from ecommerce.models import Base, Books, Meta
 from datetime import datetime
+from sqlalchemy.sql.expression import desc
 
 class FlipkartTrendsPipeline(object):
 
@@ -20,11 +21,12 @@ class FlipkartTrendsPipeline(object):
     self.dt = datetime
     Base.metadata.create_all(self.engine)
     self.session = self.Session()
+    self.round_number = self.session.query(Meta).order_by(desc(Meta.round)).first()
 
   def process_item(self, item, spider):
     log.msg(item['title'], level=log.DEBUG)
     self.newcsv.writerow([item['author'][0],item['title'][0],item['price'][0]])
-    book = Books(2,item['title'][0],item['author'][0],flipkart=item['price'][0].split(' ')[2])
+    book = Books(self.round_number.round,item['title'][0],item['author'][0],flipkart=item['price'][0].split(' ')[2])
     self.session.add(book)
     self.session.commit()
     

@@ -1,13 +1,35 @@
 from scrapy.spider import BaseSpider
 from ecommerce.items import Book
 from scrapy.selector import HtmlXPathSelector
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from ecommerce.models import Base, Meta
+from sqlalchemy.sql.expression import desc
 
 class FlipkartSpider(BaseSpider):
+
   name = "FlipkartSpider"
   allowed_domains = ["http://flipkart.com","www.flipkart.com"]
   start_urls = [
       'http://www.flipkart.com/view-books/0/new-releases'
       ]
+
+  def __init__(self):
+    self.engine = create_engine('mysql://root:thecryptex@localhost/ecommerce')
+    self.Session = sessionmaker(bind=self.engine)
+    Base.metadata.create_all(self.engine)
+    self.session = self.Session()
+    try:
+      round_info = self.session.query(Meta).order_by(desc(Meta.round)).first()
+      print round_info
+      new_round = Meta(round_info.round+1)
+      self.session.add(new_round)
+      self.session.commit()
+    except:
+      new_round = Meta(0)
+      self.session.add(new_round)
+      self.session.commit()
+
   def parse(self, response):
     #filename = response.url.split("/")[-2]
     #open(filename, 'wb').write(response.body)

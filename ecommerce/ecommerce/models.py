@@ -7,8 +7,11 @@ Base = declarative_base()
 class Meta(Base):
   __tablename__ = "meta"
 
-  round = Column(Integer)
-  time = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'), primary_key=True)
+  round = Column(Integer,primary_key=True)
+  time = Column(TIMESTAMP, server_default=text('CURRENT_TIMESTAMP'))
+
+  def __init__(self, round):
+    self.round = round
 
 
 class Books(Base):
