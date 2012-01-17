@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from ecommerce.models import Base, Meta
 from sqlalchemy.sql.expression import desc
+from ecommerce import session
 
 class FlipkartSpider(BaseSpider):
 
@@ -15,20 +16,22 @@ class FlipkartSpider(BaseSpider):
       ]
 
   def __init__(self):
-    self.engine = create_engine('mysql://root:thecryptex@localhost/ecommerce')
-    self.Session = sessionmaker(bind=self.engine)
-    Base.metadata.create_all(self.engine)
-    self.session = self.Session()
+    #self.engine = create_engine('mysql connection')
+    #self.Session = sessionmaker(bind=self.engine)
+    #Base.metadata.create_all(self.engine)
+    #self.session = self.Session()
     try:
-      round_info = self.session.query(Meta).order_by(desc(Meta.round)).first()
+      round_info = session.query(Meta).order_by(desc(Meta.round)).first()
       print round_info
       new_round = Meta(round_info.round+1)
-      self.session.add(new_round)
-      self.session.commit()
+      session.add(new_round)
+      session.commit()
+      
     except:
       new_round = Meta(0)
-      self.session.add(new_round)
-      self.session.commit()
+      session.add(new_round)
+      session.commit()
+      
 
   def parse(self, response):
     #filename = response.url.split("/")[-2]
