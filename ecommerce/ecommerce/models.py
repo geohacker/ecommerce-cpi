@@ -20,7 +20,7 @@ class Books(Base):
   id = Column(Integer,primary_key=True)
   round = Column(Integer)
   time = Column(TIMESTAMP,server_default=text('CURRENT_TIMESTAMP'))
-  title = Column(String(25))
+  title = Column(String(50))
   author= Column(String(25))
   flipkart = Column(Float(6))
   infibeam = Column(Float(6))

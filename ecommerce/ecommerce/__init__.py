@@ -1,8 +1,8 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 from ecommerce.models import Base, Books, Meta
 
-engine = create_engine('<mysql connection>')
+engine = create_engine('mysql://root:<pwd>@localhost/ecommerce')
 Base.metadata.create_all(engine)
-session = Session(engine)
+Session = sessionmaker(engine)
 #session = Session()
